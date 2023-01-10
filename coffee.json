@@ -1,0 +1,26 @@
+{
+  "wild": ".127.0.0.1.nip.io",
+  "urls": [
+    "http://www.vulnweb.com",
+    "http://rest.vulnweb.com",
+    "https://www.gnu.org",
+    "https://kernel.org",
+    "https://go.dev"
+  ],
+  "hops": [
+    {
+      "host": "127.0.0.1",
+      "port": "22",
+      "user": "ENV:USER",
+      "pass": "ENV:PASS1",
+      "key": "FILE:~/.ssh/id_rsa"
+    },
+    {
+      "host": "localhost",
+      "port": "22",
+      "user": "ENV:USER",
+      "pass": "ENV:PASS2",
+      "key": "FILE:~/.ssh/id_rsa"
+    }
+  ]
+}
