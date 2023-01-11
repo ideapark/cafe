@@ -18,6 +18,9 @@ var (
 	alive  sync.Once
 )
 
+// client returns ssh client and kickoff a keepalive background
+// goroutine only once. note that the client is lazy initialized and
+// cached.
 func client() (*ssh.Client, error) {
 	if cache == nil {
 		cache, ssherr = dial()
