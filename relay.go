@@ -33,7 +33,11 @@ func dumpable(header http.Header) bool {
 	case strings.Contains(enc, "br"):
 		return false
 	}
-
+	// as a bonus, coffee could log all the http roundtrip
+	// objects, but for developers only json data will be useful
+	// (such as debugging a restful api). other humman readable
+	// MIME types will cause too much noise, will just log their
+	// header.
 	switch ctype := header.Get("Content-Type"); {
 	case strings.Contains(ctype, "application/json"):
 		return true
