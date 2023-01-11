@@ -17,10 +17,19 @@ const (
 	keyFile = "FILE:"
 )
 
+// NOTE: this is a copy from go1.20 strings.CutPrefix(), we should use
+// that one when go1.20 is released out.
+func cutprefix(s, prefix string) (after string, found bool) {
+	if !strings.HasPrefix(s, prefix) {
+		return s, false
+	}
+	return s[len(prefix):], true
+}
+
 // env returns env specified by envkey, the exact string will be
 // returned if it's not an envkey.
 func env(envkey string) string {
-	key, ok := strings.CutPrefix(envkey, keyEnv)
+	key, ok := cutprefix(envkey, keyEnv)
 	if !ok {
 		return envkey
 	}
@@ -30,14 +39,14 @@ func env(envkey string) string {
 // file returns data read from the file specified by filekey. the
 // exact string will be returned if it's not an filekey.
 func file(filekey string) string {
-	file, ok := strings.CutPrefix(filekey, keyFile)
+	file, ok := cutprefix(filekey, keyFile)
 	if !ok {
 		return filekey
 	}
 
 	// expand ~/.ssh/id_rsa like path relative to the current
 	// user's homedir
-	if file, ok = strings.CutPrefix(file, "~"); ok {
+	if file, ok = cutprefix(file, "~"); ok {
 		home, _ := os.UserHomeDir()
 		file = filepath.Join(home, file)
 		file = filepath.Clean(file)
