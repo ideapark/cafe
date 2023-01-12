@@ -17,12 +17,12 @@ import (
 	"sync/atomic"
 )
 
-// dumpable returns true if the http header declares that http body is
+// dumpbody returns true if the http header declares that http body is
 // human readable (such as json,text,html,css). If the body is
 // compressed, it's absolutely not human readable, and false is
 // returned.
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding#directives
-func dumpable(header http.Header) bool {
+func dumpbody(header http.Header) bool {
 	switch enc := header.Get("Content-Encoding"); {
 	case strings.Contains(enc, "gzip"):
 		return false
@@ -128,14 +128,14 @@ func doTrace(obj any, roundno int64) {
 
 	switch obj := obj.(type) {
 	case *http.Request:
-		data, err := httputil.DumpRequest(obj, dumpable(obj.Header))
+		data, err := httputil.DumpRequest(obj, dumpbody(obj.Header))
 		if err == nil {
 			log.Printf("#%d\n%v\n", roundno, string(data))
 		} else {
 			log.Printf("#%d\n%v\n", roundno, err)
 		}
 	case *http.Response:
-		data, err := httputil.DumpResponse(obj, dumpable(obj.Header))
+		data, err := httputil.DumpResponse(obj, dumpbody(obj.Header))
 		if err == nil {
 			log.Printf("#%d\n%v\n", roundno, string(data))
 		} else {
