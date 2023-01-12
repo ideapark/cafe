@@ -8,6 +8,7 @@ import (
 	"log"
 	"net"
 	"sync"
+	"time"
 
 	"golang.org/x/crypto/ssh"
 )
@@ -29,10 +30,13 @@ func client() (*ssh.Client, error) {
 	// kickoff keepalive goroutine
 	alive.Do(func() {
 		go func() {
+			tick := time.Tick(3 * time.Second)
+
 			for {
 				for ssherr != nil {
 					log.Println(ssherr)
 					cache, ssherr = dial()
+					<-tick
 				}
 				ssherr = cache.Wait()
 			}
