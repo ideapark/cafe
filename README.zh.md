@@ -43,11 +43,11 @@ coffee 🍵🍵🍵
 
 The following remote network http(s) are relayed as local http:
 
-http://www.vulnweb.com.127.0.0.1.nip.io:2046
-http://rest.vulnweb.com.127.0.0.1.nip.io:2046
-http://www.gnu.org.127.0.0.1.nip.io:2046
-http://kernel.org.127.0.0.1.nip.io:2046
-http://go.dev.127.0.0.1.nip.io:2046
+🛰️ http://www.vulnweb.com.127.0.0.1.nip.io:2046
+🛰️ http://rest.vulnweb.com.127.0.0.1.nip.io:2046
+🛰️ http://www.gnu.org.127.0.0.1.nip.io:2046
+🛰️ http://kernel.org.127.0.0.1.nip.io:2046
+🛰️ http://go.dev.127.0.0.1.nip.io:2046
 
 🍵 2023/01/11 10:24:18 #1
 HEAD / HTTP/1.1

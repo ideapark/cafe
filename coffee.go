@@ -112,5 +112,9 @@ func doc() string {
 		localurls = append(localurls, localscheme+localaddress)
 	}
 
+	for i := range localurls {
+		localurls[i] = "🛰️ " + localurls[i]
+	}
+
 	return strings.Join(localurls, "\n")
 }
