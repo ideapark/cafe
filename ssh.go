@@ -20,8 +20,7 @@ var (
 )
 
 // client returns ssh client and kickoff a keepalive background
-// goroutine only once. note that the client is lazy initialized and
-// cached.
+// goroutine only once. the client is lazy initialized and cached.
 func client() (*ssh.Client, error) {
 	if cache == nil {
 		cache, ssherr = dial()
@@ -31,7 +30,6 @@ func client() (*ssh.Client, error) {
 	alive.Do(func() {
 		go func() {
 			tick := time.Tick(3 * time.Second)
-
 			for {
 				for ssherr != nil {
 					log.Println(ssherr)
@@ -46,9 +44,9 @@ func client() (*ssh.Client, error) {
 	return cache, ssherr
 }
 
-// dial returns a ssh client used to dial from the last hop of the
-// tunnel (the last hop should have network connectivity at the remote
-// network).
+// dial returns a ssh client which can be used to dial from the last
+// hop of the tunnel (the last hop must have network connectivity at
+// the remote network).
 func dial() (client *ssh.Client, err error) {
 	log.Println("establishing tunnel connection...")
 

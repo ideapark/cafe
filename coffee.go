@@ -20,18 +20,18 @@ import (
 // either password auth or publickey auth (RFC 4252), the first
 // success auth will actually take effect.
 type hop struct {
-	Host string // host ip or dns
-	Port string // host port number
+	Host string // ip or dns
+	Port string // port number
 	User string // ssh user
 	Pass string // ssh password auth
 	Key  string // ssh publickey auth
 }
 
-// coffee describes global configurations
+// coffee describes the global configurations
 type coffee struct {
-	Wild string   // wild dns suffix resolve to 127.0.0.1
+	Wild string   // wild dns suffix resolves to 127.0.0.1
 	Urls []string // remote http(s) url to relay
-	Hops []hop    // ssh tunnel hops
+	Hops []hop    // hops of ssh tunnel
 }
 
 var (

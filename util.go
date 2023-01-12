@@ -17,8 +17,8 @@ const (
 	keyFile = "FILE:"
 )
 
-// NOTE: this is a copy from go1.20 strings.CutPrefix(), we should use
-// that one when go1.20 is released out.
+// FIXME(park): this is a copy from go1.20 strings.CutPrefix(), we
+// should use that one when go1.20 is released out.
 func cutprefix(s, prefix string) (after string, found bool) {
 	if !strings.HasPrefix(s, prefix) {
 		return s, false
@@ -45,7 +45,9 @@ func file(filekey string) string {
 	}
 
 	// expand ~/.ssh/id_rsa like path relative to the current
-	// user's homedir
+	// user's home directory (when you're running coffee with
+	// `sudo`, the user home should be root user's home, which may
+	// not always expected and noted).
 	if file, ok = cutprefix(file, "~"); ok {
 		home, _ := os.UserHomeDir()
 		file = filepath.Join(home, file)
@@ -74,7 +76,7 @@ func raddr(host string) (address string) {
 }
 
 // rhost strips the localaddr wild dns suffix and port part, the
-// remaining should be a meanful dns at the remote network.
+// remaining should be a meanful address at the remote network.
 func rhost(localaddr string) (host string) {
 	switch i := strings.Index(localaddr, conf.Wild); {
 	case i > 0:
