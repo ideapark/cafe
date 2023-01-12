@@ -49,24 +49,24 @@ func dial() (client *ssh.Client, err error) {
 	log.Println("establishing tunnel connection...")
 
 	for _, hop := range conf.Hops {
-		hop.User = env(hop.User)
-		hop.Pass = env(hop.Pass)
-		hop.Key = file(hop.Key)
-
 		var (
+			user    = env(hop.User)
+			pass    = env(hop.Pass)
+			key     = file(hop.Key)
 			address = net.JoinHostPort(hop.Host, hop.Port)
-			signer  ssh.Signer
+
+			signer ssh.Signer
 		)
 
-		signer, err0 := ssh.ParsePrivateKey([]byte(hop.Key))
+		signer, err0 := ssh.ParsePrivateKey([]byte(key))
 		if err0 != nil {
 			log.Println(err0)
 		}
 
 		config := &ssh.ClientConfig{
-			User: hop.User,
+			User: user,
 			Auth: []ssh.AuthMethod{
-				ssh.Password(hop.Pass),
+				ssh.Password(pass),
 				ssh.PublicKeys(signer),
 			},
 			HostKeyCallback: ssh.InsecureIgnoreHostKey(),
