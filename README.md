@@ -8,13 +8,14 @@ Remote network http(s) are relayed as local http over ssh tunnel.
 
 `coffee` was born out to be used to make `remote network` http(s)
 services available at local, so you're able to start your local coding
-and debugging, without spinning up all the dependency services at
-local, because these dependency http(s) services are hard or even
+and debugging, without spinning up all the remote dependency services
+at local, because these dependency http(s) services are hard or even
 impossible to run at local:
 
 1. they have their own dependency services or middlewares
 2. too much resources (cpu, memory) are needed to run them all
-3. too much effort to ensure them always work (e,g. new version came out)
+3. too much effort to ensure them always work (e,g. new versions come
+   out with new apis)
 
 In one word, you just want all the dependency http(s) services out
 there and always ready to be comsumed. so you could focus on your own
@@ -135,15 +136,16 @@ X-Frame-Options: sameorigin
 
 ### Update `coffee.json`
 
-1. replace `urls` array with your service urls at the remote network 
+1. replace `urls` array with your service urls at the remote network.
 2. instruct `coffee` how to reach your remote network hop by
    hop. (`user`, `pass`, `key` are kept secure by reading from env or
-   file optionally)
-3. `wild` suffix can be changed to any public wild dns that resovles to `127.0.0.1` (optional)
+   file, optional)
+3. `wild` suffix can be changed to any public wild dns that resovles
+   to `127.0.0.1` (optional)
 
 ### Build
 
-Compile the final single binary release. happy `coffee`
+Compile the final single binary release. Happy `coffee`
 
 ```bash
 make
