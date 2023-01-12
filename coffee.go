@@ -62,7 +62,7 @@ func init() {
 	for _, raw := range conf.Urls {
 		rurl, err := url.Parse(raw)
 		if err != nil {
-			log.Fatalf("url: %s\n", raw)
+			log.Fatalf("url: %s, error: %s\n", raw, err)
 		}
 		switch rurl.Scheme {
 		case "http":
@@ -70,7 +70,7 @@ func init() {
 		case "https":
 			rtls[rurl.Host] = true
 		default:
-			log.Fatalf("%s: scheme %s not supported (http or https only)\n", raw, rurl.Scheme)
+			log.Fatalf("%s: scheme [%s] not supported (http or https only)\n", raw, rurl.Scheme)
 		}
 	}
 }
@@ -108,10 +108,10 @@ func doc() string {
 		default:
 			localaddress = net.JoinHostPort(localhost, strconv.Itoa(port))
 		}
-
 		localurls = append(localurls, localscheme+localaddress)
 	}
 
+	// prepend each local url with emoji
 	for i := range localurls {
 		localurls[i] = "🛰️ " + localurls[i]
 	}
