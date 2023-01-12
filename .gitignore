@@ -1,1 +1,5 @@
 /coffee
+/coffee.darwin-arm64
+/coffee.darwin-amd64
+/coffee.linux-arm64
+/coffee.linux-amd64
