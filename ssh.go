@@ -50,7 +50,7 @@ func client() (*ssh.Client, error) {
 func dial() (client *ssh.Client, err error) {
 	log.Println("establishing tunnel connection...")
 
-	for _, hop := range conf.Hops {
+	for i, hop := range conf.Hops {
 		var (
 			user    = env(hop.User)
 			pass    = env(hop.Pass)
@@ -74,36 +74,34 @@ func dial() (client *ssh.Client, err error) {
 			HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 		}
 
-		// first hop
-		if client == nil {
+		switch i {
+		case 0:
 			client, err = ssh.Dial("tcp", address, config)
 			if err != nil {
 				return
 			}
-			continue
-		}
+		default:
+			var (
+				conn net.Conn
+			)
+			conn, err = client.Dial("tcp", address)
+			if err != nil {
+				client.Close()
+				return
+			}
 
-		var (
-			conn net.Conn
-		)
-		conn, err = client.Dial("tcp", address)
-		if err != nil {
-			client.Close()
-			return
+			var (
+				nconn ssh.Conn
+				chans <-chan ssh.NewChannel
+				reqs  <-chan *ssh.Request
+			)
+			nconn, chans, reqs, err = ssh.NewClientConn(conn, address, config)
+			if err != nil {
+				client.Close()
+				return
+			}
+			client = ssh.NewClient(nconn, chans, reqs)
 		}
-
-		var (
-			nconn ssh.Conn
-			chans <-chan ssh.NewChannel
-			reqs  <-chan *ssh.Request
-		)
-		nconn, chans, reqs, err = ssh.NewClientConn(conn, address, config)
-		if err != nil {
-			client.Close()
-			return
-		}
-
-		client = ssh.NewClient(nconn, chans, reqs)
 	}
 
 	return
