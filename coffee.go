@@ -12,6 +12,7 @@ import (
 	"log"
 	"net"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -35,8 +36,9 @@ type coffee struct {
 }
 
 var (
-	port  int
-	trace bool
+	port    int
+	trace   bool
+	version bool
 
 	//go:embed coffee.json
 	fs   embed.FS
@@ -47,6 +49,7 @@ var (
 func init() {
 	flag.IntVar(&port, "port", 2046, "use another serving port")
 	flag.BoolVar(&trace, "trace", true, "trace every http roundtrip object")
+	flag.BoolVar(&version, "version", false, "print coffee version")
 
 	log.SetPrefix("🍵 ")
 
@@ -78,13 +81,18 @@ func init() {
 func main() {
 	flag.Parse()
 
-	fmt.Printf(`coffee 🍵🍵🍵
+	if version {
+		fmt.Println(vertag())
+		os.Exit(0)
+	}
+
+	fmt.Printf(`%s 🍵🍵🍵
 
 The following remote network http(s) are relayed as local http:
 
 %s
 
-`, doc())
+`, vertag(), doc())
 
 	doRelay()
 }
