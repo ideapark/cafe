@@ -31,7 +31,7 @@ func client() (*ssh.Client, error) {
 		go func() {
 			tick := time.Tick(3 * time.Second)
 			for {
-				for ssherr != nil {
+				for ssherr != nil || cache == nil {
 					log.Println(ssherr)
 					cache, ssherr = dial()
 					<-tick
