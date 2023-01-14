@@ -4,7 +4,14 @@
 
 Remote network http(s) are relayed as local http over ssh tunnel.
 
-## Use Case Scenario
+## Use Scenario
+
+### Case #1: Break microservice architecture dependencies cycle
+
+- Network Topology:
+
+> Local: any network (laptop)
+> Remote: private network (cloud)
 
 `coffee` was born out to be used to make `remote network` http(s)
 services available at local, so you're able to start your local coding
@@ -20,6 +27,26 @@ impossible to run at local:
 In one word, you just want all the dependency http(s) services out
 there and always ready to be comsumed. so you could focus on your own
 business.
+
+### Case #2: Global network http(s) websites are relayed at local
+
+- Network Topology:
+
+> Local: china network (GFW protected)
+> Remote: global network (Internet)
+
+Suppose you have a server running at AWS and it has free access to any
+public internet such google (other cloud provider is working as well),
+and you have ssh access to this server. Run `coffee` at your local and
+configure it with `https://www.google.com` relayed as your local http
+`http://www.google.com.127.0.0.1.nip.io`. now you are free to access
+google now.
+
+Vice verse, you could also run `coffee` at the remote network server,
+and make the wild dns resolve to this server public ip. Now it's a
+public managed vpn like services.
+
+Use it wisely!
 
 ## How it looks like
 
