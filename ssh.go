@@ -56,10 +56,9 @@ func dial() (client *ssh.Client, err error) {
 			pass    = env(hop.Pass)
 			key     = file(hop.Key)
 			address = net.JoinHostPort(hop.Host, hop.Port)
-
-			signer ssh.Signer
 		)
 
+		// try publickey auth if specified
 		signer, err0 := ssh.ParsePrivateKey([]byte(key))
 		if err0 != nil {
 			log.Println(err0)
