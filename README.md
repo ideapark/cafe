@@ -50,6 +50,10 @@ Use it wisely!
 
 ## How it looks like
 
+> I would assume you have `sshd` enabled at your localhost, and you
+> can successfully `ssh localhost` with either password or publickey
+> auth.
+
 - help
 
 The default port `2046` will be used if `-port` not specified, and
