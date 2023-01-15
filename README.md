@@ -131,7 +131,9 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: sameorigin
 ```
 
-## Make it work for your environment
+## Coffee Users
+
+How to make it work for my environment.
 
 ```json
 {
@@ -161,7 +163,7 @@ X-Frame-Options: sameorigin
 }
 ```
 
-### Update `coffee.json`
+- Update `coffee.json`
 
 1. replace `urls` array with your service urls at the remote network.
 2. instruct `coffee` how to reach your remote network hop by
@@ -170,7 +172,7 @@ X-Frame-Options: sameorigin
 3. `wild` suffix can be changed to any public wild dns that resovles
    to `127.0.0.1` (optional)
 
-### Build
+- Build
 
 Compile the final single binary release. Happy `coffee`
 
@@ -178,7 +180,27 @@ Compile the final single binary release. Happy `coffee`
 make
 ```
 
-## Technical references
+## Coffee Contributors
+
+### Understanding Coffee Traffic Flow
+
+```text
+              LOCAL NETWORK                                                                                    REMOTE NETWORK
+┌────────────────────────────────────────────────┐                                                      ┌───────────────────────────┐
+│ [http://www.gnu.org.127.0.0.1.nip.io]          │                                                      │ [https://www.gnu.org]     │
+│ [http://kernel.org.127.0.0.1.nip.io]           │                                                      │ [https://kernel.org]      │
+│ [http://go.dev.127.0.0.1.nip.io]               │                                                      │ [https://go.dev]          │
+│                                                │                     sshd          sshd               │         sshd              │
+│             [CURL].......................(coffee:2046)..............(hop.1).......(hop.2)......................(hop.n)            │
+│                                                │                                                      │                           │
+│ [http://www.vulnweb.com.127.0.0.1.nip.io:2046] │                                                      │ [http://www.vulnweb.com]  │
+│ [http://rest.vulnweb.com.127.0.0.1.nip.io:2046]│                                                      │ [http://rest.vulnweb.com] │
+└────────────────────────────────────────────────┘                                                      └───────────────────────────┘
+                 ↑                               ↑                                                                  ↑
+                 └─────────── http ──────────────┴─────────────────────── tcp: ssh tunnel ──────────────────────────┘
+```
+
+### Technical references
 
 - [The Secure Shell (SSH) Protocol Architecture](https://www.rfc-editor.org/rfc/rfc4251)
 - [The Secure Shell (SSH) Authentication Protocol](https://www.rfc-editor.org/rfc/rfc4252)
