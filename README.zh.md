@@ -123,7 +123,9 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: sameorigin
 ```
 
-## 配置我的环境 `coffee`
+## Coffee 用户
+
+怎样让 `coffee` 在我的环境运行。
 
 ```json
 {
@@ -153,13 +155,13 @@ X-Frame-Options: sameorigin
 }
 ```
 
-### 编辑 `coffee.json`
+- 编辑 `coffee.json`
 
 1. 用你的远程网络 http(s) 地址替换 `urls` 数组。
 2. 配置 `coffee` 怎样一跳一跳的到达你的远程网络 (为保护你的隐私，`user`, `pass`, `key` 支持环境变量或者文件读入)。
 3. `wild` 支持替换成任何可以解析到 `127.0.0.1` 的通配符域名后缀。
 
-### 编译
+- 编译
 
 编译最终的单二进制可执行文件，祝你使用 `coffee` 有一个愉快的过程！
 
@@ -167,7 +169,27 @@ X-Frame-Options: sameorigin
 make
 ```
 
-## 技术参考引用
+## Coffee 开源贡献者
+
+### 理解 `coffee` 的网络流
+
+```text
+              LOCAL NETWORK                                                                                    REMOTE NETWORK
+┌────────────────────────────────────────────────┐                                                      ┌───────────────────────────┐
+│ [http://www.gnu.org.127.0.0.1.nip.io]          │                                                      │ [https://www.gnu.org]     │
+│ [http://kernel.org.127.0.0.1.nip.io]           │                                                      │ [https://kernel.org]      │
+│ [http://go.dev.127.0.0.1.nip.io]               │                                                      │ [https://go.dev]          │
+│                                                │                     sshd          sshd               │         sshd              │
+│             [CURL].......................(coffee:2046)..............(hop.1).......(hop.2)......................(hop.n)            │
+│                                                │                                                      │                           │
+│ [http://www.vulnweb.com.127.0.0.1.nip.io:2046] │                                                      │ [http://www.vulnweb.com]  │
+│ [http://rest.vulnweb.com.127.0.0.1.nip.io:2046]│                                                      │ [http://rest.vulnweb.com] │
+└────────────────────────────────────────────────┘                                                      └───────────────────────────┘
+                 ↑                               ↑                                                                  ↑
+                 └─────────── http ──────────────┴─────────────────────── tcp: ssh tunnel ──────────────────────────┘
+```
+
+### 技术参考引用
 
 - [The Secure Shell (SSH) Protocol Architecture](https://www.rfc-editor.org/rfc/rfc4251)
 - [The Secure Shell (SSH) Authentication Protocol](https://www.rfc-editor.org/rfc/rfc4252)
