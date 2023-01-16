@@ -54,10 +54,16 @@
 ```bash
 $ ./coffee --help
 Usage of coffee:
+  -conf string
+        filepath to coffee.json
   -port int
         use another serving port (default 2046)
   -trace
         trace every http roundtrip object (default true)
+  -version
+        print coffee version
+  -view
+        print default coffee.json
 ```
 
 - 运行观察
