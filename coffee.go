@@ -39,6 +39,7 @@ var (
 	port    int
 	trace   bool
 	version bool
+	conf    string
 
 	//go:embed coffee.json
 	fs   embed.FS
@@ -50,13 +51,37 @@ func init() {
 	flag.IntVar(&port, "port", 2046, "use another serving port")
 	flag.BoolVar(&trace, "trace", true, "trace every http roundtrip object")
 	flag.BoolVar(&version, "version", false, "print coffee version")
+	flag.StringVar(&conf, "conf", "", "filepath to coffee.json")
 
 	log.SetPrefix("🍵 ")
+}
 
-	data, err := fs.ReadFile("coffee.json")
-	if err != nil {
-		log.Fatalln(err)
+func main() {
+	flag.Parse()
+
+	if version {
+		fmt.Println(vertag())
+		os.Exit(0)
 	}
+
+	var (
+		data []byte
+		err  error
+	)
+
+	switch {
+	case len(conf) > 0:
+		data, err = os.ReadFile(conf)
+		if err != nil {
+			log.Fatalln(err)
+		}
+	default:
+		data, err = fs.ReadFile("coffee.json")
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}
+
 	err = json.Unmarshal(data, &cup)
 	if err != nil {
 		log.Fatalln(err)
@@ -75,15 +100,6 @@ func init() {
 		default:
 			log.Fatalf("%s: scheme [%s] not supported (http or https only)\n", raw, rurl.Scheme)
 		}
-	}
-}
-
-func main() {
-	flag.Parse()
-
-	if version {
-		fmt.Println(vertag())
-		os.Exit(0)
 	}
 
 	fmt.Printf(`%s 🍵🍵🍵
