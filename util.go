@@ -66,7 +66,7 @@ func raddr(host string) (address string) {
 	host = rhost(host)
 
 	switch {
-	case rtls[host]:
+	case tls0[host]:
 		address = net.JoinHostPort(host, "443")
 	default:
 		address = net.JoinHostPort(host, "80")
@@ -78,7 +78,7 @@ func raddr(host string) (address string) {
 // rhost strips the localaddr wild dns suffix and port part, the
 // remaining should be a meanful address at the remote network.
 func rhost(localaddr string) (host string) {
-	switch i := strings.Index(localaddr, cup.Wild); {
+	switch i := strings.Index(localaddr, g0.Wild); {
 	case i > 0:
 		host = localaddr[0:i]
 	default:

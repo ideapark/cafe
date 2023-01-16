@@ -44,8 +44,8 @@ var (
 
 	//go:embed coffee.json
 	fs   embed.FS
-	cup  coffee
-	rtls = map[string]bool{}
+	g0   coffee
+	tls0 = map[string]bool{}
 )
 
 func init() {
@@ -89,23 +89,23 @@ func main() {
 		}
 	}
 
-	err = json.Unmarshal(data, &cup)
+	err = json.Unmarshal(data, &g0)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	for _, raw := range cup.Urls {
-		rurl, err := url.Parse(raw)
+	for _, raw := range g0.Urls {
+		u, err := url.Parse(raw)
 		if err != nil {
 			log.Fatalf("url: %s, error: %s\n", raw, err)
 		}
-		switch rurl.Scheme {
+		switch u.Scheme {
 		case "http":
-			rtls[rurl.Host] = false
+			tls0[u.Host] = false
 		case "https":
-			rtls[rurl.Host] = true
+			tls0[u.Host] = true
 		default:
-			log.Fatalf("%s: scheme [%s] not supported (http or https only)\n", raw, rurl.Scheme)
+			log.Fatalf("%s: scheme [%s] not supported (http or https only)\n", raw, u.Scheme)
 		}
 	}
 
@@ -123,12 +123,12 @@ The following remote network http(s) are relayed as local http:
 func doc() string {
 	var localurls []string
 
-	for _, raw := range cup.Urls {
-		rurl, _ := url.Parse(raw) // err already checked at init stage
+	for _, raw := range g0.Urls {
+		u, _ := url.Parse(raw) // err already checked at init stage
 
 		var (
 			localscheme  = "http://"
-			localhost    = rurl.Host + cup.Wild
+			localhost    = u.Host + g0.Wild
 			localaddress string
 		)
 

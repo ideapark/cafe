@@ -65,7 +65,7 @@ func relay(w http.ResponseWriter, req *http.Request) {
 	)
 
 	switch {
-	case rtls[host]:
+	case tls0[host]:
 		scheme = "https"
 	default:
 		scheme = "http"
@@ -89,7 +89,7 @@ func relay(w http.ResponseWriter, req *http.Request) {
 		},
 	}
 	// Roundtripping remote network tls url
-	if rtls[host] {
+	if tls0[host] {
 		sshtunnel.TLSClientConfig = &tls.Config{
 			ServerName: host,
 		}
