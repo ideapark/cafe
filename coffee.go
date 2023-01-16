@@ -39,6 +39,7 @@ var (
 	port    int
 	trace   bool
 	version bool
+	view    bool
 	conf    string
 
 	//go:embed coffee.json
@@ -51,6 +52,7 @@ func init() {
 	flag.IntVar(&port, "port", 2046, "use another serving port")
 	flag.BoolVar(&trace, "trace", true, "trace every http roundtrip object")
 	flag.BoolVar(&version, "version", false, "print coffee version")
+	flag.BoolVar(&view, "view", false, "print default coffee.json")
 	flag.StringVar(&conf, "conf", "", "filepath to coffee.json")
 
 	log.SetPrefix("🍵 ")
@@ -59,8 +61,13 @@ func init() {
 func main() {
 	flag.Parse()
 
-	if version {
+	switch {
+	case version:
 		fmt.Println(vertag())
+		os.Exit(0)
+	case view:
+		data, _ := fs.ReadFile("coffee.json")
+		fmt.Println(string(data))
 		os.Exit(0)
 	}
 
