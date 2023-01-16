@@ -50,7 +50,7 @@ func client() (*ssh.Client, error) {
 func dial() (client *ssh.Client, err error) {
 	log.Println("establishing tunnel connection...")
 
-	for i, hop := range conf.Hops {
+	for i, hop := range cup.Hops {
 		var (
 			user    = env(hop.User)
 			pass    = env(hop.Pass)

@@ -42,7 +42,7 @@ var (
 
 	//go:embed coffee.json
 	fs   embed.FS
-	conf coffee
+	cup  coffee
 	rtls = map[string]bool{}
 )
 
@@ -57,12 +57,12 @@ func init() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	err = json.Unmarshal(data, &conf)
+	err = json.Unmarshal(data, &cup)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	for _, raw := range conf.Urls {
+	for _, raw := range cup.Urls {
 		rurl, err := url.Parse(raw)
 		if err != nil {
 			log.Fatalf("url: %s, error: %s\n", raw, err)
@@ -100,12 +100,12 @@ The following remote network http(s) are relayed as local http:
 func doc() string {
 	var localurls []string
 
-	for _, raw := range conf.Urls {
+	for _, raw := range cup.Urls {
 		rurl, _ := url.Parse(raw) // err already checked at init stage
 
 		var (
 			localscheme  = "http://"
-			localhost    = rurl.Host + conf.Wild
+			localhost    = rurl.Host + cup.Wild
 			localaddress string
 		)
 
