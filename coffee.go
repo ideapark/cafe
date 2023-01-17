@@ -55,6 +55,7 @@ func init() {
 	flag.BoolVar(&view, "view", false, "print default coffee.json")
 	flag.StringVar(&conf, "conf", "", "filepath to coffee.json")
 
+	log.SetFlags(log.Ltime | log.Lshortfile)
 	log.SetPrefix("🍵 ")
 }
 
