@@ -185,9 +185,9 @@ make
 ```text
               LOCAL NETWORK                                                                                    REMOTE NETWORK
 ┌────────────────────────────────────────────────┐                                                      ┌───────────────────────────┐
-│ [http://www.gnu.org.127.0.0.1.nip.io]          │                                                      │ [https://www.gnu.org]     │
-│ [http://kernel.org.127.0.0.1.nip.io]           │                                                      │ [https://kernel.org]      │
-│ [http://go.dev.127.0.0.1.nip.io]               │                                                      │ [https://go.dev]          │
+│ [http://www.gnu.org.127.0.0.1.nip.io:2046]     │                                                      │ [https://www.gnu.org]     │
+│ [http://kernel.org.127.0.0.1.nip.io:2046]      │                                                      │ [https://kernel.org]      │
+│ [http://go.dev.127.0.0.1.nip.io:2046]          │                                                      │ [https://go.dev]          │
 │                                                │                     sshd          sshd               │         sshd              │
 │             [CURL].......................(coffee:2046)..............(hop.1).......(hop.2)......................(hop.n)            │
 │                                                │                                                      │                           │

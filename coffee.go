@@ -131,7 +131,6 @@ func doc() string {
 			localhost    = u.Host + g0.Wild
 			localaddress string
 		)
-
 		switch port {
 		case 80:
 			// default http port, keep it clean
