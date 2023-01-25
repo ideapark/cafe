@@ -5,6 +5,7 @@
 package main
 
 import (
+	"bytes"
 	"embed"
 	"encoding/json"
 	"flag"
@@ -14,7 +15,7 @@ import (
 	"net/url"
 	"os"
 	"strconv"
-	"strings"
+	"text/tabwriter"
 )
 
 // hop represents a hop in the way of an ssh tunnel path, you can use
@@ -110,42 +111,37 @@ func main() {
 		}
 	}
 
-	fmt.Printf(`%s 🍵🍵🍵
-
-The following remote network http(s) are relayed as local http:
-
-%s
-
-`, vertag(), doc())
-
 	doRelay()
 }
 
 func doc() string {
-	var localurls []string
+	var (
+		buffer = &bytes.Buffer{}
+		writer = tabwriter.NewWriter(buffer, 0, 0, 1, ' ', tabwriter.Debug)
+	)
 
-	for _, raw := range g0.Urls {
+	fmt.Fprintln(writer, "#relay", "\t", "Local http", "\t", "Remote http(s)")
+	fmt.Fprintln(writer, "------", "\t", "----------", "\t", "--------------")
+
+	for i, raw := range g0.Urls {
 		u, _ := url.Parse(raw) // err already checked at init stage
 
 		var (
-			localscheme  = "http://"
-			localhost    = u.Host + g0.Wild
-			localaddress string
+			scheme  = "http://"
+			host    = u.Host + g0.Wild
+			address string
 		)
 		switch port {
 		case 80:
 			// default http port, keep it clean
-			localaddress = localhost
+			address = host
 		default:
-			localaddress = net.JoinHostPort(localhost, strconv.Itoa(port))
+			address = net.JoinHostPort(host, strconv.Itoa(port))
 		}
-		localurls = append(localurls, localscheme+localaddress)
+		localurl := scheme + address
+		fmt.Fprintln(writer, i+1, "\t", localurl, "\t", raw)
 	}
+	writer.Flush()
 
-	// prepend each local url with emoji
-	for i := range localurls {
-		localurls[i] = "🛰️ " + localurls[i]
-	}
-
-	return strings.Join(localurls, "\n")
+	return buffer.String()
 }

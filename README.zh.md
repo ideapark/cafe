@@ -72,15 +72,15 @@ Usage of coffee:
 
 ```bash
 $ ./coffee
-coffee 🍵🍵🍵
+coffee-v0.0.2 🍵🍵🍵
 
-The following remote network http(s) are relayed as local http:
-
-🛰️ http://www.vulnweb.com.127.0.0.1.nip.io:2046
-🛰️ http://rest.vulnweb.com.127.0.0.1.nip.io:2046
-🛰️ http://www.gnu.org.127.0.0.1.nip.io:2046
-🛰️ http://kernel.org.127.0.0.1.nip.io:2046
-🛰️ http://go.dev.127.0.0.1.nip.io:2046
+#relay  | Local http                                     | Remote http(s)
+------  | ----------                                     | --------------
+1       | http://www.vulnweb.com.127.0.0.1.nip.io:2046   | http://www.vulnweb.com
+2       | http://rest.vulnweb.com.127.0.0.1.nip.io:2046  | http://rest.vulnweb.com
+3       | http://www.gnu.org.127.0.0.1.nip.io:2046       | https://www.gnu.org
+4       | http://kernel.org.127.0.0.1.nip.io:2046        | https://kernel.org
+5       | http://go.dev.127.0.0.1.nip.io:2046            | https://go.dev
 
 🍵 2023/01/11 10:24:18 #1
 HEAD / HTTP/1.1

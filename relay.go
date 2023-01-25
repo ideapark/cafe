@@ -7,6 +7,7 @@ package main
 import (
 	"context"
 	"crypto/tls"
+	"fmt"
 	"io"
 	"log"
 	"net"
@@ -147,6 +148,11 @@ func doTrace(obj any, roundno int64) {
 }
 
 func doRelay() {
+	fmt.Printf(`%s 🍵🍵🍵
+
+%s
+`, vertag(), doc())
+
 	http.HandleFunc("/", relay)
 
 	local := net.JoinHostPort("127.0.0.1", strconv.Itoa(port))
