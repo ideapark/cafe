@@ -81,7 +81,7 @@ the remote network.
 
 ```bash
 $ ./coffee
-coffee-v0.0.2
+coffee-v0.0.3
 #relay  | Remote http(s)           | Local http
 ------  | --------------           | ----------
 1       | http://www.vulnweb.com   | http://www.vulnweb.com.127.0.0.1.nip.io:2046
@@ -90,25 +90,34 @@ coffee-v0.0.2
 4       | https://kernel.org       | http://kernel.org.127.0.0.1.nip.io:2046
 5       | https://go.dev           | http://go.dev.127.0.0.1.nip.io:2046
 
-🍵 2023/01/11 10:24:18 #1
-HEAD / HTTP/1.1
+2023/01/26 20:10:07 #1
+GET / HTTP/1.1
 Host: www.gnu.org
-Accept: */*
-User-Agent: curl/7.85.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Accept-Encoding: gzip, deflate
+Accept-Language: en,zh-CN;q=0.9,zh;q=0.8
+Connection: keep-alive
+Cookie: _ga=GA1.2.630524832.1673162343; _gcl_au=1.1.466449589.1673411024
+Purpose: prefetch
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36
 
 
-🍵 2023/01/11 10:24:18 establishing tunnel connection...
-🍵 2023/01/11 10:24:20 #1
+2023/01/26 20:10:07 establishing tunnel connection...
+2023/01/26 20:10:08 #1
 HTTP/1.1 200 OK
-Connection: close
+Content-Length: 9911
 Accept-Ranges: bytes
 Access-Control-Allow-Origin: (null)
 Cache-Control: max-age=0
+Connection: Keep-Alive
+Content-Encoding: gzip
 Content-Language: en
 Content-Location: home.html
 Content-Type: text/html
-Date: Wed, 11 Jan 2023 02:24:19 GMT
-Expires: Wed, 11 Jan 2023 02:24:19 GMT
+Date: Thu, 26 Jan 2023 12:10:08 GMT
+Expires: Thu, 26 Jan 2023 12:10:08 GMT
+Keep-Alive: timeout=5, max=100
 Server: Apache/2.4.29
 Strict-Transport-Security: max-age=63072000
 Tcn: choice
@@ -122,7 +131,7 @@ X-Frame-Options: sameorigin
 Have a try for one of the relayed urls.
 
 ```bash
-# curl -I http://www.gnu.org.127.0.0.1.nip.io:2046
+$ curl -I http://www.gnu.org.127.0.0.1.nip.io:2046
 HTTP/1.1 200 OK
 Accept-Ranges: bytes
 Access-Control-Allow-Origin: (null)
@@ -130,8 +139,8 @@ Cache-Control: max-age=0
 Content-Language: en
 Content-Location: home.html
 Content-Type: text/html
-Date: Wed, 11 Jan 2023 02:24:19 GMT
-Expires: Wed, 11 Jan 2023 02:24:19 GMT
+Date: Thu, 26 Jan 2023 12:11:06 GMT
+Expires: Thu, 26 Jan 2023 12:11:06 GMT
 Server: Apache/2.4.29
 Strict-Transport-Security: max-age=63072000
 Tcn: choice
