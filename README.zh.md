@@ -4,6 +4,8 @@
 
 通过 ssh 隧道，将远程网络的 http(s) 服务中转成本地 http 服务。
 
+![](https://user-images.githubusercontent.com/49527198/214834637-2f2f5cab-194a-45c0-876d-b0c28fd14b63.png)
+
 ## 使用场景
 
 ### 场景 #1: 打破微服务架构服务依赖环

@@ -4,6 +4,8 @@
 
 Remote network http(s) are relayed as local http over ssh tunnel.
 
+![](https://user-images.githubusercontent.com/49527198/214834637-2f2f5cab-194a-45c0-876d-b0c28fd14b63.png)
+
 ## Use Scenario
 
 ### Case #1: Break microservice architecture dependencies cycle
