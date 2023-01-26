@@ -81,15 +81,14 @@ the remote network.
 
 ```bash
 $ ./coffee
-coffee-v0.0.2 🍵🍵🍵
-
-#relay  | Local http                                     | Remote http(s)
-------  | ----------                                     | --------------
-1       | http://www.vulnweb.com.127.0.0.1.nip.io:2046   | http://www.vulnweb.com
-2       | http://rest.vulnweb.com.127.0.0.1.nip.io:2046  | http://rest.vulnweb.com
-3       | http://www.gnu.org.127.0.0.1.nip.io:2046       | https://www.gnu.org
-4       | http://kernel.org.127.0.0.1.nip.io:2046        | https://kernel.org
-5       | http://go.dev.127.0.0.1.nip.io:2046            | https://go.dev
+coffee-v0.0.2
+#relay  | Remote http(s)           | Local http
+------  | --------------           | ----------
+1       | http://www.vulnweb.com   | http://www.vulnweb.com.127.0.0.1.nip.io:2046
+2       | http://rest.vulnweb.com  | http://rest.vulnweb.com.127.0.0.1.nip.io:2046
+3       | https://www.gnu.org      | http://www.gnu.org.127.0.0.1.nip.io:2046
+4       | https://kernel.org       | http://kernel.org.127.0.0.1.nip.io:2046
+5       | https://go.dev           | http://go.dev.127.0.0.1.nip.io:2046
 
 🍵 2023/01/11 10:24:18 #1
 HEAD / HTTP/1.1

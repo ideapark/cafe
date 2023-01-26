@@ -7,7 +7,6 @@ package main
 import (
 	"context"
 	"crypto/tls"
-	"fmt"
 	"io"
 	"log"
 	"net"
@@ -62,14 +61,12 @@ func relay(w http.ResponseWriter, req *http.Request) {
 		roundno = roundno
 		host    = rhost(req.Host)
 		address = raddr(req.Host)
-		scheme  string
+		scheme  = "http"
 	)
 
 	switch {
 	case tls0[host]:
 		scheme = "https"
-	default:
-		scheme = "http"
 	}
 
 	// Setups for relaying this request
@@ -148,11 +145,6 @@ func doTrace(obj any, roundno int64) {
 }
 
 func doRelay() {
-	fmt.Printf(`%s 🍵🍵🍵
-
-%s
-`, vertag(), doc())
-
 	http.HandleFunc("/", relay)
 
 	local := net.JoinHostPort("127.0.0.1", strconv.Itoa(port))

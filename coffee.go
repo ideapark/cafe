@@ -44,9 +44,9 @@ var (
 	conf    string
 
 	//go:embed coffee.json
-	fs   embed.FS
-	g0   coffee
-	tls0 = map[string]bool{}
+	fs      embed.FS
+	coffee0 coffee
+	tls0    = map[string]bool{}
 )
 
 func init() {
@@ -55,9 +55,6 @@ func init() {
 	flag.BoolVar(&version, "version", false, "print coffee version")
 	flag.BoolVar(&view, "view", false, "print default coffee.json")
 	flag.StringVar(&conf, "conf", "", "filepath to coffee.json")
-
-	log.SetFlags(log.Ltime | log.Lshortfile)
-	log.SetPrefix("🍵 ")
 }
 
 func main() {
@@ -91,12 +88,12 @@ func main() {
 		}
 	}
 
-	err = json.Unmarshal(data, &g0)
+	err = json.Unmarshal(data, &coffee0)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	for _, raw := range g0.Urls {
+	for _, raw := range coffee0.Urls {
 		u, err := url.Parse(raw)
 		if err != nil {
 			log.Fatalf("url: %s, error: %s\n", raw, err)
@@ -111,24 +108,27 @@ func main() {
 		}
 	}
 
+	help()
 	doRelay()
 }
 
-func doc() string {
+func help() {
+	fmt.Println(vertag())
+
 	var (
 		buffer = &bytes.Buffer{}
 		writer = tabwriter.NewWriter(buffer, 0, 0, 1, ' ', tabwriter.Debug)
 	)
 
-	fmt.Fprintln(writer, "#relay", "\t", "Local http", "\t", "Remote http(s)")
-	fmt.Fprintln(writer, "------", "\t", "----------", "\t", "--------------")
+	fmt.Fprintln(writer, "#relay", "\t", "Remote http(s)", "\t", "Local http")
+	fmt.Fprintln(writer, "------", "\t", "--------------", "\t", "----------")
 
-	for i, raw := range g0.Urls {
+	for i, raw := range coffee0.Urls {
 		u, _ := url.Parse(raw) // err already checked at init stage
 
 		var (
 			scheme  = "http://"
-			host    = u.Host + g0.Wild
+			host    = u.Host + coffee0.Wild
 			address string
 		)
 		switch port {
@@ -139,9 +139,9 @@ func doc() string {
 			address = net.JoinHostPort(host, strconv.Itoa(port))
 		}
 		localurl := scheme + address
-		fmt.Fprintln(writer, i+1, "\t", localurl, "\t", raw)
+		fmt.Fprintln(writer, i+1, "\t", raw, "\t", localurl)
 	}
 	writer.Flush()
 
-	return buffer.String()
+	fmt.Println(buffer.String())
 }
