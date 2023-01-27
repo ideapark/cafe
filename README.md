@@ -4,7 +4,7 @@
 
 Remote network http(s) are relayed as local http over ssh tunnel.
 
-![](https://user-images.githubusercontent.com/49527198/214834637-2f2f5cab-194a-45c0-876d-b0c28fd14b63.png)
+![](https://user-images.githubusercontent.com/49527198/215134049-1aad187c-1d24-4b00-a006-e08f9278ab55.png)
 
 ## Use Scenario
 
