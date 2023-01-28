@@ -216,4 +216,4 @@ make
 - [The Secure Shell (SSH) Connection Protocol](https://www.rfc-editor.org/rfc/rfc4254)
 - [The Secure Shell (SSH) Protocol Assigned Numbers](https://www.rfc-editor.org/rfc/rfc4250)
 - [Hypertext Transfer Protocol -- HTTP/1.1](https://www.rfc-editor.org/rfc/rfc2616)
-- [SSH Protocol by Go](https://pkg.go.dev/golang.org/x/crypto/ssh)
+- [Go SSH](https://pkg.go.dev/golang.org/x/crypto/ssh)
