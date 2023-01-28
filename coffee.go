@@ -108,11 +108,11 @@ func main() {
 		}
 	}
 
-	help()
+	tips()
 	doRelay()
 }
 
-func help() {
+func tips() {
 	fmt.Println(vertag())
 
 	var (
