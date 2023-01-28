@@ -37,7 +37,7 @@ func env(envkey string) string {
 }
 
 // file returns data read from the file specified by filekey. the
-// exact string will be returned if it's not an filekey.
+// exact string will be returned if it's not a filekey.
 func file(filekey string) string {
 	file, ok := cutprefix(filekey, keyFile)
 	if !ok {
@@ -46,8 +46,8 @@ func file(filekey string) string {
 
 	// expand ~/.ssh/id_rsa like path relative to the current
 	// user's home directory (when you're running coffee with
-	// `sudo`, the user home should be root user's home, which may
-	// not always expected and noted).
+	// `sudo`, the user home should be root's home, which may not
+	// always be expected and noted).
 	if file, ok = cutprefix(file, "~"); ok {
 		home, _ := os.UserHomeDir()
 		file = filepath.Join(home, file)
@@ -71,7 +71,6 @@ func raddr(host string) (address string) {
 	default:
 		address = net.JoinHostPort(host, "80")
 	}
-
 	return
 }
 
