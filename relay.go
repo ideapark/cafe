@@ -96,6 +96,7 @@ func relay(w http.ResponseWriter, req *http.Request) {
 	resp, err := sshtunnel.RoundTrip(req)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		doTrace(err, roundno)
 		return
 	}
 	defer resp.Body.Close()
@@ -116,15 +117,18 @@ func relay(w http.ResponseWriter, req *http.Request) {
 	io.Copy(w, resp.Body)
 }
 
-// doTrace will dump the http roundtrip objects (aka,. request and
+// doTrace dumps the http roundtrip objects (aka,. request and
 // response) to standard logger. Every roundtrip object pairs will be
-// numbered monotonically incrementally.
+// numbered monotonically and incrementally. note that it can also log
+// error objects.
 func doTrace(obj any, roundno int64) {
 	if !trace {
 		return
 	}
 
 	switch obj := obj.(type) {
+	case error:
+		log.Printf("#%d\n%v\n", roundno, obj)
 	case *http.Request:
 		data, err := httputil.DumpRequest(obj, dumpbody(obj.Header))
 		if err == nil {
