@@ -18,7 +18,7 @@ import (
 )
 
 // dumpbody returns true if the http header declares that http body is
-// human readable (such as json,text,html,css). If the body is
+// human readable (such as json, text, html, css). If the body is
 // compressed, it's absolutely not human readable, and false is
 // returned.
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding#directives

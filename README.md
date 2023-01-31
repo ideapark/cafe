@@ -65,15 +65,15 @@ every http roundtripping object will be logged out to stdout.
 $ ./coffee --help
 Usage of coffee:
   -conf string
-        filepath to coffee.json
+    	use customized configuration coffee.json
   -port int
-        use another serving port (default 2046)
+    	use another serving port (default 2046)
   -trace
-        trace every http roundtrip object (default true)
+    	trace every http roundtrip object (default true)
   -version
-        print coffee version
+    	print coffee version
   -view
-        print default coffee.json
+    	print default builtin configuration coffee.json (as start point of customization)
 ```
 
 - run it & keep watching

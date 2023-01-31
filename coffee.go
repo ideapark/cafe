@@ -20,7 +20,7 @@ import (
 
 // hop represents a hop in the way of an ssh tunnel path, you can use
 // either password auth or publickey auth (RFC 4252), the first
-// success auth will actually take effect.
+// successfully auth will actually take effect.
 type hop struct {
 	Host string // ip or dns
 	Port string // port number
@@ -29,7 +29,8 @@ type hop struct {
 	Key  string // ssh publickey auth
 }
 
-// coffee describes the global configurations
+// coffee describes the global configuration of running coffee
+// process.
 type coffee struct {
 	Wild string   // wild dns suffix resolves to 127.0.0.1
 	Urls []string // remote http(s) url to relay
@@ -53,8 +54,8 @@ func init() {
 	flag.IntVar(&port, "port", 2046, "use another serving port")
 	flag.BoolVar(&trace, "trace", true, "trace every http roundtrip object")
 	flag.BoolVar(&version, "version", false, "print coffee version")
-	flag.BoolVar(&view, "view", false, "print default coffee.json")
-	flag.StringVar(&conf, "conf", "", "filepath to coffee.json")
+	flag.BoolVar(&view, "view", false, "print default builtin configuration coffee.json (as start point of customization)")
+	flag.StringVar(&conf, "conf", "", "use customized configuration coffee.json")
 }
 
 func main() {
@@ -133,7 +134,7 @@ func tips() {
 		)
 		switch port {
 		case 80:
-			// default http port, keep it clean
+			// keep it clean for default http port
 			address = host
 		default:
 			address = net.JoinHostPort(host, strconv.Itoa(port))
