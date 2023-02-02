@@ -44,10 +44,17 @@ func client() (*ssh.Client, error) {
 	return cache, ssherr
 }
 
+var (
+	dialMu sync.Mutex
+)
+
 // dial returns a ssh client which can be used to dial from the last
 // hop of the tunnel (the last hop must have network connectivity at
 // the remote network).
 func dial() (client *ssh.Client, err error) {
+	dialMu.Lock()
+	defer dialMu.Unlock()
+
 	log.Println("establishing tunnel connection...")
 
 	for i, hop := range coffee0.Hops {
