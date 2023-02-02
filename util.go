@@ -61,9 +61,9 @@ func file(filekey string) string {
 	return string(data)
 }
 
-// raddr returns an address dialable at the remote network.
-func raddr(host string) (address string) {
-	host = rhost(host)
+// addr returns an address dialable at the remote network.
+func addr(httphost string) (address string) {
+	host := host(httphost)
 
 	switch {
 	case tls0[host]:
@@ -74,14 +74,14 @@ func raddr(host string) (address string) {
 	return
 }
 
-// rhost strips the localaddr wild dns suffix and port part, the
-// remaining should be a meanful address at the remote network.
-func rhost(localaddr string) (host string) {
-	switch i := strings.Index(localaddr, coffee0.Wild); {
+// host strips the http header host wild dns suffix and port part,
+// the remaining should be a meanful address at the remote network.
+func host(httphost string) (host string) {
+	switch i := strings.Index(httphost, coffee0.Wild); {
 	case i > 0:
-		host = localaddr[0:i]
+		host = httphost[0:i]
 	default:
-		host = localaddr
+		host = httphost
 	}
 	return
 }

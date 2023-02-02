@@ -55,13 +55,11 @@ var roundno int64
 //  3. intercepts the response
 //  4. write back the response to the origin requestor
 func relay(w http.ResponseWriter, req *http.Request) {
-	atomic.AddInt64(&roundno, 1)
-
 	var (
-		roundno = roundno
-		host    = rhost(req.Host)
-		address = raddr(req.Host)
+		roundno = atomic.AddInt64(&roundno, 1)
 		scheme  = "http"
+		host    = host(req.Host)
+		address = addr(req.Host)
 	)
 
 	switch {
