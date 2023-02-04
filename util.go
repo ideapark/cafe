@@ -17,19 +17,10 @@ const (
 	keyFile = "FILE:"
 )
 
-// FIXME(park): this is a copy from go1.20 strings.CutPrefix(), we
-// should use that one when go1.20 is released out.
-func cutprefix(s, prefix string) (after string, found bool) {
-	if !strings.HasPrefix(s, prefix) {
-		return s, false
-	}
-	return s[len(prefix):], true
-}
-
 // env returns env specified by envkey, the exact string will be
 // returned if it's not an envkey.
 func env(envkey string) string {
-	key, ok := cutprefix(envkey, keyEnv)
+	key, ok := strings.CutPrefix(envkey, keyEnv)
 	if !ok {
 		return envkey
 	}
@@ -39,7 +30,7 @@ func env(envkey string) string {
 // file returns data read from the file specified by filekey. the
 // exact string will be returned if it's not a filekey.
 func file(filekey string) string {
-	file, ok := cutprefix(filekey, keyFile)
+	file, ok := strings.CutPrefix(filekey, keyFile)
 	if !ok {
 		return filekey
 	}
@@ -48,7 +39,7 @@ func file(filekey string) string {
 	// user's home directory (when you're running coffee with
 	// `sudo`, the user home should be root's home, which may not
 	// always be expected and noted).
-	if file, ok = cutprefix(file, "~"); ok {
+	if file, ok = strings.CutPrefix(file, "~"); ok {
 		home, _ := os.UserHomeDir()
 		file = filepath.Join(home, file)
 		file = filepath.Clean(file)
