@@ -56,11 +56,16 @@ func file(filekey string) string {
 func addr(httphost string) (address string) {
 	host := host(httphost)
 
+	// TODO(park): support non default port
+	const (
+		portHttps = "443"
+		portHttp  = "80"
+	)
 	switch {
 	case tls0[host]:
-		address = net.JoinHostPort(host, "443")
+		address = net.JoinHostPort(host, portHttps)
 	default:
-		address = net.JoinHostPort(host, "80")
+		address = net.JoinHostPort(host, portHttp)
 	}
 	return
 }
