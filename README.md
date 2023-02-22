@@ -8,7 +8,7 @@ Remote network http(s) are relayed as local http over ssh tunnel.
 
 ## Use Scenario
 
-### Case #1: Break microservice architecture dependencies cycle
+### Case #1: Connecting to remote private network services from local
 
 - Network Topology:
 
