@@ -4,8 +4,6 @@
 
 通过 ssh 隧道，将远程网络的 http(s) 服务中转成本地 http 服务。
 
-![](https://user-images.githubusercontent.com/49527198/215134049-1aad187c-1d24-4b00-a006-e08f9278ab55.png)
-
 ## 使用场景
 
 ### 场景 #1: 从本地直连远程私有网络的服务
@@ -36,7 +34,7 @@
 假设你有一个服务器跑在 AWS 上，并且它能够访问任何公网服务，例如 Google
 （其他的云厂商也同样可行）。你能够 ssh 到这台服务器，在你本地运行
 `coffee`，配置它 `https://www.google.com` 中继到本地
-`http://www.google.com.127.0.0.1.nip.io`。你就能够访问 Google 了。
+`http://www.google.com.local.gd`。你就能够访问 Google 了。
 
 反之亦然，你也能把 `coffee` 运行在远程网络服务器上，让通配 DNS 解析到
 这个服务器的公网 ip 上，你就有了一个公共托管的 vpn 服务器了。
@@ -74,32 +72,30 @@ Usage of coffee:
 
 ```bash
 $ ./coffee
-coffee-v0.0.3
+coffee-v0.0.5
 #relay  | Remote http(s)           | Local http
 ------  | --------------           | ----------
-1       | http://www.vulnweb.com   | http://www.vulnweb.com.127.0.0.1.nip.io:2046
-2       | http://rest.vulnweb.com  | http://rest.vulnweb.com.127.0.0.1.nip.io:2046
-3       | https://www.gnu.org      | http://www.gnu.org.127.0.0.1.nip.io:2046
-4       | https://kernel.org       | http://kernel.org.127.0.0.1.nip.io:2046
-5       | https://go.dev           | http://go.dev.127.0.0.1.nip.io:2046
+1       | http://www.vulnweb.com   | http://www.vulnweb.com.local.gd:2046
+2       | http://rest.vulnweb.com  | http://rest.vulnweb.com.local.gd:2046
+3       | https://www.gnu.org      | http://www.gnu.org.local.gd:2046
+4       | https://kernel.org       | http://kernel.org.local.gd:2046
+5       | https://go.dev           | http://go.dev.local.gd:2046
 
-2023/01/26 20:10:07 #1
+2023/03/02 21:19:35 #1
 GET / HTTP/1.1
 Host: www.gnu.org
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
 Accept-Encoding: gzip, deflate
 Accept-Language: en,zh-CN;q=0.9,zh;q=0.8
 Connection: keep-alive
-Cookie: _ga=GA1.2.630524832.1673162343; _gcl_au=1.1.466449589.1673411024
-Purpose: prefetch
 Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36
 
 
-2023/01/26 20:10:07 establishing tunnel connection...
-2023/01/26 20:10:08 #1
+2023/03/02 21:19:35 establishing tunnel connection...
+2023/03/02 21:19:37 #1
 HTTP/1.1 200 OK
-Content-Length: 9911
+Content-Length: 9653
 Accept-Ranges: bytes
 Access-Control-Allow-Origin: (null)
 Cache-Control: max-age=0
@@ -108,8 +104,8 @@ Content-Encoding: gzip
 Content-Language: en
 Content-Location: home.html
 Content-Type: text/html
-Date: Thu, 26 Jan 2023 12:10:08 GMT
-Expires: Thu, 26 Jan 2023 12:10:08 GMT
+Date: Thu, 02 Mar 2023 13:19:36 GMT
+Expires: Thu, 02 Mar 2023 13:19:36 GMT
 Keep-Alive: timeout=5, max=100
 Server: Apache/2.4.29
 Strict-Transport-Security: max-age=63072000
@@ -124,7 +120,7 @@ X-Frame-Options: sameorigin
 以下是一个 `www.gnu.org` 本地中继后的情况。
 
 ```bash
-$ curl -I http://www.gnu.org.127.0.0.1.nip.io:2046
+$ curl -I http://www.gnu.org.local.gd:2046
 HTTP/1.1 200 OK
 Accept-Ranges: bytes
 Access-Control-Allow-Origin: (null)
@@ -148,7 +144,7 @@ X-Frame-Options: sameorigin
 
 ```json
 {
-  "wild": ".127.0.0.1.nip.io",
+  "wild": ".local.gd",
   "urls": [
     "http://www.vulnweb.com",
     "http://rest.vulnweb.com",
@@ -193,19 +189,19 @@ make
 ### 理解 `coffee` 的网络流
 
 ```text
-              LOCAL NETWORK                                                                                    REMOTE NETWORK
-┌────────────────────────────────────────────────┐                                                      ┌───────────────────────────┐
-│ [http://www.gnu.org.127.0.0.1.nip.io:2046]     │                                                      │ [https://www.gnu.org]     │
-│ [http://kernel.org.127.0.0.1.nip.io:2046]      │                                                      │ [https://kernel.org]      │
-│ [http://go.dev.127.0.0.1.nip.io:2046]          │                                                      │ [https://go.dev]          │
-│                                                │                     sshd          sshd               │         sshd              │
-│             [CURL].......................(coffee:2046)..............(hop.1).......(hop.2)......................(hop.n)            │
-│                                                │                                                      │                           │
-│ [http://www.vulnweb.com.127.0.0.1.nip.io:2046] │                                                      │ [http://www.vulnweb.com]  │
-│ [http://rest.vulnweb.com.127.0.0.1.nip.io:2046]│                                                      │ [http://rest.vulnweb.com] │
-└────────────────────────────────────────────────┘                                                      └───────────────────────────┘
-                 ↑                               ↑                                                                  ↑
-                 └─────────── http ──────────────┴─────────────────────── tcp: ssh tunnel ──────────────────────────┘
+              LOCAL NETWORK                                                                REMOTE NETWORK
+┌────────────────────────────────────────┐                                          ┌──────────────────────────┐
+│ [http://www.gnu.org.local.gd:2046]     │                                          │ [https://www.gnu.org]    │
+│ [http://kernel.org.local.gd:2046]      │                                          │ [https://kernel.org]     │
+│ [http://go.dev.local.gd:2046]          │                                          │ [https://go.dev]         │
+│                                        │              sshd          sshd          │       sshd               │
+│             [CURL]..............(coffee:2046)........(hop.1).......(hop.2)...............(hop.n)             │
+│                                        │                                          │                          │
+│ [http://www.vulnweb.com.local.gd:2046] │                                          │ [http://www.vulnweb.com] │
+│ [http://rest.vulnweb.com.local.gd:2046]│                                          │ [http://rest.vulnweb.com]│
+└────────────────────────────────────────┘                                          └──────────────────────────┘
+                 ↑                       ↑                                                       ↑
+                 └───────── http ────────┴───────────────── tcp: ssh tunnel ─────────────────────┘
 ```
 
 ### 技术参考引用

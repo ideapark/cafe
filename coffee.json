@@ -1,5 +1,5 @@
 {
-  "wild": ".127.0.0.1.nip.io",
+  "wild": ".local.gd",
   "urls": [
     "http://www.vulnweb.com",
     "http://rest.vulnweb.com",
