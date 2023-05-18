@@ -1,4 +1,4 @@
-# Coffee
+# CAFE
 
 [English](README.md)
 
@@ -138,7 +138,7 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: sameorigin
 ```
 
-## Coffee 用户
+## Cafe 用户
 
 怎样让 `cafe` 在我的环境运行。
 
@@ -184,7 +184,7 @@ X-Frame-Options: sameorigin
 make
 ```
 
-## Coffee 开源贡献者
+## Cafe 开源贡献者
 
 ### 理解 `cafe` 的网络流
 

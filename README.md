@@ -1,4 +1,4 @@
-# Coffee
+# CAFE
 
 [中文](README.zh.md)
 
@@ -147,7 +147,7 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: sameorigin
 ```
 
-## Coffee Users
+## Cafe Users
 
 How to make it work for my environment.
 
@@ -196,9 +196,9 @@ Compile the final single binary release. Happy `cafe`
 make
 ```
 
-## Coffee Contributors
+## Cafe Contributors
 
-### Understanding Coffee Traffic Flow
+### Understanding Cafe Traffic Flow
 
 ```text
               LOCAL NETWORK                                                                REMOTE NETWORK
