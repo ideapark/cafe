@@ -36,7 +36,7 @@ func file(filekey string) string {
 	}
 
 	// expand ~/.ssh/id_rsa like path relative to the current
-	// user's home directory (when you're running coffee with
+	// user's home directory (when you're running cafe with
 	// `sudo`, the user home should be root's home, which may not
 	// always be expected and noted).
 	if file, ok = strings.CutPrefix(file, "~"); ok {
@@ -73,7 +73,7 @@ func addr(httphost string) (address string) {
 // host strips the http header host wild dns suffix and port part,
 // the remaining should be a meanful address at the remote network.
 func host(httphost string) (host string) {
-	switch i := strings.Index(httphost, coffee0.Wild); {
+	switch i := strings.Index(httphost, cafe0.Wild); {
 	case i > 0:
 		host = httphost[0:i]
 	default:

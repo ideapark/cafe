@@ -1,4 +1,4 @@
-module ideapark.io/coffee
+module ideapark.io/cafe
 
 go 1.20
 

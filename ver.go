@@ -1,8 +1,8 @@
 package main
 
 const (
-	// coffee-vX.Y.Z will be updated per new releases
-	ver = "coffee-v0.0.5"
+	// cafe-vX.Y.Z will be updated per new releases
+	ver = "cafe-v0.0.5"
 )
 
 func vertag() string {

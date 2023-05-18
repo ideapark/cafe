@@ -33,7 +33,7 @@ func dumpbody(header http.Header) bool {
 	case strings.Contains(enc, "br"):
 		return false
 	}
-	// as a bonus, coffee could log all the http roundtrip
+	// as a bonus, cafe could log all the http roundtrip
 	// objects, but for developers only json data will be useful
 	// (such as debugging a restful api). other humman readable
 	// MIME types will cause too much noise, will just log their
@@ -49,7 +49,7 @@ func dumpbody(header http.Header) bool {
 // every incoming http request will increment it by 1.
 var roundno int64
 
-// relay intercepts the http request orginated from the coffee end user:
+// relay intercepts the http request orginated from the cafe end user:
 //  1. establish ssh tunnel to the remote network
 //  2. round trip this request
 //  3. intercepts the response

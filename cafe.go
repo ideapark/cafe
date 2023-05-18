@@ -29,9 +29,9 @@ type hop struct {
 	Key  string // ssh publickey auth
 }
 
-// coffee describes the global configuration of running coffee
+// cafe describes the global configuration of running cafe
 // process.
-type coffee struct {
+type cafe struct {
 	Wild string   // wild dns suffix resolves to 127.0.0.1
 	Urls []string // remote http(s) url to relay
 	Hops []hop    // hops of ssh tunnel
@@ -44,18 +44,18 @@ var (
 	view    bool
 	conf    string
 
-	//go:embed coffee.json
-	fs      embed.FS
-	coffee0 coffee
-	tls0    = map[string]bool{}
+	//go:embed cafe.json
+	fs    embed.FS
+	cafe0 cafe
+	tls0  = map[string]bool{}
 )
 
 func init() {
 	flag.IntVar(&port, "port", 2046, "use another serving port")
 	flag.BoolVar(&trace, "trace", true, "trace every http roundtrip object")
-	flag.BoolVar(&version, "version", false, "print coffee version")
-	flag.BoolVar(&view, "view", false, "print default builtin configuration coffee.json (as start point of customization)")
-	flag.StringVar(&conf, "conf", "", "use customized configuration coffee.json")
+	flag.BoolVar(&version, "version", false, "print cafe version")
+	flag.BoolVar(&view, "view", false, "print default builtin configuration cafe.json (as start point of customization)")
+	flag.StringVar(&conf, "conf", "", "use customized configuration cafe.json")
 }
 
 func main() {
@@ -66,7 +66,7 @@ func main() {
 		fmt.Println(vertag())
 		os.Exit(0)
 	case view:
-		data, _ := fs.ReadFile("coffee.json")
+		data, _ := fs.ReadFile("cafe.json")
 		fmt.Println(string(data))
 		os.Exit(0)
 	}
@@ -83,18 +83,18 @@ func main() {
 			log.Fatalln(err)
 		}
 	default:
-		data, err = fs.ReadFile("coffee.json")
+		data, err = fs.ReadFile("cafe.json")
 		if err != nil {
 			log.Fatalln(err)
 		}
 	}
 
-	err = json.Unmarshal(data, &coffee0)
+	err = json.Unmarshal(data, &cafe0)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	for _, raw := range coffee0.Urls {
+	for _, raw := range cafe0.Urls {
 		u, err := url.Parse(raw)
 		if err != nil {
 			log.Fatalf("url: %s, error: %s\n", raw, err)
@@ -124,12 +124,12 @@ func tips() {
 	fmt.Fprintln(writer, "#relay", "\t", "Remote http(s)", "\t", "Local http")
 	fmt.Fprintln(writer, "------", "\t", "--------------", "\t", "----------")
 
-	for i, raw := range coffee0.Urls {
+	for i, raw := range cafe0.Urls {
 		u, _ := url.Parse(raw) // err already checked at init stage
 
 		var (
 			scheme  = "http://"
-			host    = u.Host + coffee0.Wild
+			host    = u.Host + cafe0.Wild
 			address string
 		)
 		switch port {

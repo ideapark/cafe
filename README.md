@@ -13,7 +13,7 @@ Remote network http(s) are relayed as local http over ssh tunnel.
 > Local: any network (laptop)
 > Remote: private network (cloud)
 
-`coffee` was born out to be used to make `remote network` http(s)
+`cafe` was born out to be used to make `remote network` http(s)
 services available at local, so you're able to start your local coding
 and debugging, without spinning up all the remote dependency services
 at local, because these dependency http(s) services are hard or even
@@ -37,12 +37,12 @@ business.
 
 Suppose you have a server running at AWS and it has free access to any
 public internet such google (other cloud provider is working as well),
-and you have ssh access to this server. Run `coffee` at your local and
+and you have ssh access to this server. Run `cafe` at your local and
 configure it with `https://www.google.com` relayed as your local http
 `http://www.google.com.local.gd`. now you are free to access google
 now.
 
-Vice verse, you could also run `coffee` at the remote network server,
+Vice verse, you could also run `cafe` at the remote network server,
 and make the wild dns resolve to this server public ip. Now it's a
 public managed vpn like services.
 
@@ -60,28 +60,28 @@ The default port `2046` will be used if `-port` not specified, and
 every http roundtripping object will be logged out to stdout.
 
 ```bash
-$ ./coffee --help
-Usage of coffee:
+$ ./cafe --help
+Usage of cafe:
   -conf string
-    	use customized configuration coffee.json
+    	use customized configuration cafe.json
   -port int
     	use another serving port (default 2046)
   -trace
     	trace every http roundtrip object (default true)
   -version
-    	print coffee version
+    	print cafe version
   -view
-    	print default builtin configuration coffee.json (as start point of customization)
+    	print default builtin configuration cafe.json (as start point of customization)
 ```
 
 - run it & keep watching
 
-Start `coffee`, it will start relaying the urls you have configured to
+Start `cafe`, it will start relaying the urls you have configured to
 the remote network.
 
 ```bash
-$ ./coffee
-coffee-v0.0.5
+$ ./cafe
+cafe-v0.0.5
 #relay  | Remote http(s)           | Local http
 ------  | --------------           | ----------
 1       | http://www.vulnweb.com   | http://www.vulnweb.com.local.gd:2046
@@ -179,10 +179,10 @@ How to make it work for my environment.
 }
 ```
 
-- Update `coffee.json`
+- Update `cafe.json`
 
 1. replace `urls` array with your service urls at the remote network.
-2. instruct `coffee` how to reach your remote network hop by
+2. instruct `cafe` how to reach your remote network hop by
    hop. (`user`, `pass`, `key` are kept secure by reading from env or
    file, optional)
 3. `wild` suffix can be changed to any public wild dns that resovles
@@ -190,7 +190,7 @@ How to make it work for my environment.
 
 - Build
 
-Compile the final single binary release. Happy `coffee`
+Compile the final single binary release. Happy `cafe`
 
 ```bash
 make
@@ -207,7 +207,7 @@ make
 │ [http://kernel.org.local.gd:2046]      │                                          │ [https://kernel.org]     │
 │ [http://go.dev.local.gd:2046]          │                                          │ [https://go.dev]         │
 │                                        │              sshd          sshd          │       sshd               │
-│             [CURL]..............(coffee:2046)........(hop.1).......(hop.2)...............(hop.n)             │
+│             [CURL]..............(cafe:2046)..........(hop.1).......(hop.2)...............(hop.n)             │
 │                                        │                                          │                          │
 │ [http://www.vulnweb.com.local.gd:2046] │                                          │ [http://www.vulnweb.com] │
 │ [http://rest.vulnweb.com.local.gd:2046]│                                          │ [http://rest.vulnweb.com]│

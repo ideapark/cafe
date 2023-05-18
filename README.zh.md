@@ -13,7 +13,7 @@
 > 本地：任何网络（工作电脑）
 > 远程：云上私有网络
 
-`coffee` 用来将远程网络 http(s) 服务中转成本地 http 服务，这样您可以开
+`cafe` 用来将远程网络 http(s) 服务中转成本地 http 服务，这样您可以开
 始本地编码和调试，无需在本地运行所有依赖的远程 http(s) 服务，因为这些
 服务很难甚至不可能在本地运行起来：
 
@@ -33,10 +33,10 @@
 
 假设你有一个服务器跑在 AWS 上，并且它能够访问任何公网服务，例如 Google
 （其他的云厂商也同样可行）。你能够 ssh 到这台服务器，在你本地运行
-`coffee`，配置它 `https://www.google.com` 中继到本地
+`cafe`，配置它 `https://www.google.com` 中继到本地
 `http://www.google.com.local.gd`。你就能够访问 Google 了。
 
-反之亦然，你也能把 `coffee` 运行在远程网络服务器上，让通配 DNS 解析到
+反之亦然，你也能把 `cafe` 运行在远程网络服务器上，让通配 DNS 解析到
 这个服务器的公网 ip 上，你就有了一个公共托管的 vpn 服务器了。
 
 请明智的使用它！
@@ -48,31 +48,31 @@
 
 - 启动参数
 
-如果不指定端口，`coffee` 将使用默认 `2046` 端口提供本地中继服务。默认
+如果不指定端口，`cafe` 将使用默认 `2046` 端口提供本地中继服务。默认
 打印所有的请求响应对象到标准日志输出.
 
 ```bash
-$ ./coffee --help
-Usage of coffee:
+$ ./cafe --help
+Usage of cafe:
   -conf string
-    	use customized configuration coffee.json
+    	use customized configuration cafe.json
   -port int
     	use another serving port (default 2046)
   -trace
     	trace every http roundtrip object (default true)
   -version
-    	print coffee version
+    	print cafe version
   -view
-    	print default builtin configuration coffee.json (as start point of customization)
+    	print default builtin configuration cafe.json (as start point of customization)
 ```
 
 - 运行观察
 
-启动 `coffee` 后，他将开始中继您配置的远程网络 http(s) 服务到本地。
+启动 `cafe` 后，他将开始中继您配置的远程网络 http(s) 服务到本地。
 
 ```bash
-$ ./coffee
-coffee-v0.0.5
+$ ./cafe
+cafe-v0.0.5
 #relay  | Remote http(s)           | Local http
 ------  | --------------           | ----------
 1       | http://www.vulnweb.com   | http://www.vulnweb.com.local.gd:2046
@@ -140,7 +140,7 @@ X-Frame-Options: sameorigin
 
 ## Coffee 用户
 
-怎样让 `coffee` 在我的环境运行。
+怎样让 `cafe` 在我的环境运行。
 
 ```json
 {
@@ -170,15 +170,15 @@ X-Frame-Options: sameorigin
 }
 ```
 
-- 编辑 `coffee.json`
+- 编辑 `cafe.json`
 
 1. 用你的远程网络 http(s) 地址替换 `urls` 数组。
-2. 配置 `coffee` 怎样一跳一跳的到达你的远程网络 (为保护你的隐私，`user`, `pass`, `key` 支持环境变量或者文件读入)。
+2. 配置 `cafe` 怎样一跳一跳的到达你的远程网络 (为保护你的隐私，`user`, `pass`, `key` 支持环境变量或者文件读入)。
 3. `wild` 支持替换成任何可以解析到 `127.0.0.1` 的通配符域名后缀。
 
 - 编译
 
-编译最终的单二进制可执行文件，祝你使用 `coffee` 有一个愉快的过程！
+编译最终的单二进制可执行文件，祝你使用 `cafe` 有一个愉快的过程！
 
 ```bash
 make
@@ -186,7 +186,7 @@ make
 
 ## Coffee 开源贡献者
 
-### 理解 `coffee` 的网络流
+### 理解 `cafe` 的网络流
 
 ```text
               LOCAL NETWORK                                                                REMOTE NETWORK
@@ -195,7 +195,7 @@ make
 │ [http://kernel.org.local.gd:2046]      │                                          │ [https://kernel.org]     │
 │ [http://go.dev.local.gd:2046]          │                                          │ [https://go.dev]         │
 │                                        │              sshd          sshd          │       sshd               │
-│             [CURL]..............(coffee:2046)........(hop.1).......(hop.2)...............(hop.n)             │
+│             [CURL]..............(cafe:2046)..........(hop.1).......(hop.2)...............(hop.n)             │
 │                                        │                                          │                          │
 │ [http://www.vulnweb.com.local.gd:2046] │                                          │ [http://www.vulnweb.com] │
 │ [http://rest.vulnweb.com.local.gd:2046]│                                          │ [http://rest.vulnweb.com]│
