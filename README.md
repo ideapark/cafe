@@ -10,8 +10,8 @@ Remote network http(s) are relayed as local http over ssh tunnel.
 
 - Network Topology:
 
-> Local: any network (laptop)
-> Remote: private network (cloud)
+> Local: any network (Laptop)
+> Remote: private network (Cloud)
 
 `cafe` was born out to be used to make `remote network` http(s)
 services available at local, so you're able to start your local coding
