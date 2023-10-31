@@ -24,13 +24,10 @@ import (
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding#directives
 func dumpbody(header http.Header) bool {
 	switch enc := header.Get("Content-Encoding"); {
-	case strings.Contains(enc, "gzip"):
-		return false
-	case strings.Contains(enc, "compress"):
-		return false
-	case strings.Contains(enc, "deflate"):
-		return false
-	case strings.Contains(enc, "br"):
+	case strings.Contains(enc, "gzip"),
+		strings.Contains(enc, "compress"),
+		strings.Contains(enc, "deflate"),
+		strings.Contains(enc, "br"):
 		return false
 	}
 	// as a bonus, cafe could log all the http roundtrip
