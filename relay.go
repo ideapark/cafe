@@ -71,6 +71,13 @@ func relay(w http.ResponseWriter, req *http.Request) {
 
 	doTrace(req, roundno)
 
+	// FIXME: ssh connection leakage, ssh server crashed by
+	// thousands of ssh sessions. The http.Transport has internal
+	// connection pool management policy, every incoming http
+	// request would have a http.Transport object created, and the
+	// underlying ssh connection will be kept alive for a long
+	// time.
+
 	// Transport is roundtripping over ssh tunnel connection
 	sshtunnel := &http.Transport{
 		DialContext: func(_ context.Context, _ string, _ string) (net.Conn, error) {
