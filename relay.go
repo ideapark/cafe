@@ -14,6 +14,7 @@ import (
 	"net/http/httputil"
 	"strconv"
 	"strings"
+	"sync"
 	"sync/atomic"
 )
 
@@ -41,6 +42,33 @@ func dumpbody(header http.Header) bool {
 	default:
 		return false
 	}
+}
+
+// tuncache caches the http.Transport by address
+var (
+	tuncache = make(map[string]*http.Transport)
+	mu       = &sync.Mutex{}
+)
+
+func tunnel(address string) *http.Transport {
+	mu.Lock()
+	defer mu.Unlock()
+
+	if tun, ok := tuncache[address]; ok {
+		return tun
+	}
+
+	tun := &http.Transport{
+		DialContext: func(_ context.Context, _ string, _ string) (net.Conn, error) {
+			client, err := client()
+			if err != nil {
+				return nil, err
+			}
+			return client.Dial("tcp", address)
+		},
+	}
+	tuncache[address] = tun
+	return tun
 }
 
 // every incoming http request will increment it by 1.
@@ -71,31 +99,17 @@ func relay(w http.ResponseWriter, req *http.Request) {
 
 	doTrace(req, roundno)
 
-	// FIXME: ssh connection leakage, ssh server crashed by
-	// thousands of ssh sessions. The http.Transport has internal
-	// connection pool management policy, every incoming http
-	// request would have a http.Transport object created, and the
-	// underlying ssh connection will be kept alive for a long
-	// time.
-
 	// Transport is roundtripping over ssh tunnel connection
-	sshtunnel := &http.Transport{
-		DialContext: func(_ context.Context, _ string, _ string) (net.Conn, error) {
-			client, err := client()
-			if err != nil {
-				return nil, err
-			}
-			return client.Dial("tcp", address)
-		},
-	}
+	sshtun := tunnel(address)
 	// Roundtripping remote network tls url
 	if tls0[host] {
-		sshtunnel.TLSClientConfig = &tls.Config{
+		sshtun.TLSClientConfig = &tls.Config{
 			ServerName: host,
 		}
 	}
+	defer sshtun.CloseIdleConnections()
 
-	resp, err := sshtunnel.RoundTrip(req)
+	resp, err := sshtun.RoundTrip(req)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		doTrace(err, roundno)
