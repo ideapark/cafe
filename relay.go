@@ -101,13 +101,14 @@ func relay(w http.ResponseWriter, req *http.Request) {
 
 	// Transport is roundtripping over ssh tunnel connection
 	sshtun := tunnel(address)
-	// Roundtripping remote network tls url
+	defer sshtun.CloseIdleConnections()
+
+	// Setup tls configurations when upstream speaks tls
 	if tls0[host] {
 		sshtun.TLSClientConfig = &tls.Config{
 			ServerName: host,
 		}
 	}
-	defer sshtun.CloseIdleConnections()
 
 	resp, err := sshtun.RoundTrip(req)
 	if err != nil {
